@@ -1,0 +1,21 @@
+{
+  "name": "assignment_upnova_2025",
+  "version": "1.0.0",
+  "main": "script.js",
+  "homepage": "https://liamdoan.github.io/unv-1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "keywords": [],
+  "author": "Lam Doan",
+  "license": "ISC",
+  "description": "upnova assignment",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "typescript": "^5.8.2"
+  }
+}
