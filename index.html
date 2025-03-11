@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>UNV-1</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="introduction">
+            <h1 class="shop-title">Astro Shop</h1>
+            <p class="shop-description">Take a look at our products, feel free to buy some</p>
+        </div>
+        <div class="gallery"></div>
+        <div class="product-view"></div>
+    </div>
+
+    <!-- product card templates -->
+    <div id="product-card-template" style="display: none;">
+        <div class="item">
+            <div class="item-photo">
+                <img src="" alt="">
+            </div>
+            <div class="item-info">
+                <p class="item-title"></p>
+                <p class="item-description"></p>
+            </div>
+            <div class="item-price"></div>
+        </div>
+    </div>
+
+    <!-- single product view template -->
+    <div id="product-view-template" style="display: none;">
+        <div class="product-view-container">
+            <div class="product-view-header">
+                <button class="back-arrow">←</button>
+                <div class="breadcrumb">
+                    Home / Shirts / <span class="current-product"></span>
+                </div>
+            </div>
+            <div class="product-view-content">
+                <div class="product-view-main">
+                    <div class="product-view-photo">
+                        <img src="" alt="">
+                    </div>
+                    <div class="product-view-detail">
+                        <div class="product-view-title-desc">
+                            <h1 class="product-view-title"></h1>
+                            <p class="product-view-description"></p>
+                        </div>
+                        <div class="product-view-price-action">
+                            <p class="product-view-price"></p>
+                            <p class="product-view-price-notice">* This is a fictional price</p>
+                            <button class="product-view-buy">Add to cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-view-more-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(245, 245, 245);
+}
+
+h1, h2, p {
+    margin: 0;
+}
+
+.wrapper {
+    min-height: 100%;
+    padding: 4rem;
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.introduction {
+    margin-bottom: 2rem;
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+}
+
+.introduction.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.shop-title {
+    margin-bottom: 0.5rem;
+}
+
+.shop-description {
+    color: #666;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+}
+
+.item {
+    width: 280px;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    border-radius: 12px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out, background-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.item.reverse {
+    background-color: transparent;
+}
+
+.item:hover {
+    cursor: pointer;
+}
+
+.item-photo {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+}
+
+.item-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s;
+}
+
+/* only scale in gallery view */
+.gallery .item:hover .item-photo img {
+    transform: scale(1.1);
+}
+
+.item-info {
+    padding: 1rem;
+}
+
+.item-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.item-description {
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    background-color: transparent !important;
+    font-size: 1rem;
+}
+
+.item-price {
+    align-self: flex-end;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.2s ease-out;
+}
+
+.item.hide-card {
+    transform: translateY(100vh);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.item.show-card {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.item.animating {
+    pointer-events: none;
+    background-color: transparent;
+    box-shadow: none;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out, background-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.item.animating .item-photo {
+    position: fixed;
+    z-index: 2000;
+    margin: 0;
+    border-radius: 12px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    transform-origin: 0 0;
+    transition: transform 0.2s;
+}
+
+.item.animating .item-photo img {
+    transform: scale(1) !important;
+    transition: transform 0.2s;
+}
+
+.item.animating .item-title {
+    position: fixed;
+    z-index: 2000;
+    margin: 0;
+    animation: itemTitleFadeOut 0.2s forwards;
+}
+
+.item.animating .item-title.reverse {
+    animation: itemTitleFadeIn 0.2s forwards;
+}
+
+@keyframes itemTitleFadeOut {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--title-translate-x), var(--title-translate-y));
+    }
+}
+
+@keyframes itemTitleFadeIn {
+    0% {
+        opacity: 0;
+        transform: translate(var(--title-translate-x), var(--title-translate-y));
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+.item.animating .item-description {
+    position: fixed;
+    z-index: 2000;
+    margin: 0;
+    transform-origin: 0 0;
+    transition: all 0.2s;
+    padding: 0.5rem;
+    border-radius: 4px;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    width: auto;
+    max-width: none;
+}
+
+.item.animating .item-price {
+    position: fixed;
+    z-index: 2000;
+    transform-origin: 0 0;
+    transition: all 0.2s ease-out;
+    padding: 0rem 1rem;
+    font-size: 1.8rem;
+}
+
+.item.animating .item-price.reverse {
+    font-size: 1rem;
+    padding: 1rem;
+}
+
+/* Product view */
+.product-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.product-view.active {
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.product-view-photo {
+    visibility: hidden; /* hide target photo completely */
+    height: 450px;
+    aspect-ratio: 1 / 1 !important;
+    flex-shrink: 0;
+}
+
+.product-view.active .item.animating .item-photo {
+    /* photo stays in product-view position */
+    position: fixed;
+    height: 450px;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.product-view.active .item.animating .item-description {
+    position: fixed;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    width: 100%;
+    max-width: 100%;
+}
+
+.product-view-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.product-view-header {
+    position: sticky;
+    top: 0;
+    background-color: rgb(245, 245, 245);
+    padding: 2rem 1rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.product-view.active .product-view-header {
+    visibility: visible;
+    opacity: 1;
+    animation: fadeIn 0.2s;
+}
+
+.product-view-header.reverse {
+    animation: fadeOut 0.2s forwards !important;
+}
+
+.back-arrow {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+}
+
+.breadcrumb {
+    font-size: 1rem;
+}
+
+/* product view content  */
+.product-view-content {
+    margin: 0 auto;
+    padding: 1rem 4rem 2rem;
+}
+
+.product-view-main {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.product-view-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 450px;
+    max-width: 450px;
+    background-color: #979797;
+    margin: 0 auto;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.product-view-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-view-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-view-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: black;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.product-view.active .product-view-title {
+    visibility: visible;
+    opacity: 1;
+    animation: fadeIn 0.2s;
+}
+
+.product-view-title.reverse {
+    visibility: visible;
+    animation: fadeOut 0.2s forwards !important;
+}
+
+.product-view-description {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    visibility: hidden; /* hide target description during animation */
+    width: 100%;
+}
+
+.product-view-price-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0;
+}
+
+.product-view-price {
+    font-size: 1.8rem;
+    background-color: transparent;
+    font-weight: bold;
+    color: #2e3440;
+    visibility: hidden;
+    align-self: flex-end;
+    padding: 0rem 1rem;
+}
+
+.product-view-price-notice {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+    color: #666;
+}
+
+.product-view-buy {
+    margin: 1rem 1rem 0;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    border-radius: 40px;
+    background-color: #2e3440;
+    color: white;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.product-view-more-details {
+    opacity: 0;
+    visibility: hidden;
+    color: #666;
+}
+
+.product-view.active .product-view-buy,
+.product-view.active .product-view-more-details {
+    visibility: visible;
+    opacity: 1;
+    animation: fadeIn 0.2s;
+}
+
+.product-view-buy.reverse,
+.product-view-more-details.reverse {
+    animation: fadeOut 0.2s forwards !important;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
